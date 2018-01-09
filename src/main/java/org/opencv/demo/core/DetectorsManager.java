@@ -40,6 +40,12 @@ public class DetectorsManager {
         };
     }
 
+    public void reTrainImage() throws Exception {
+        if (recognizerManager != null) {
+            recognizerManager.reTrainRecognizer();
+        }
+    }
+
     public Mat detect(Mat capturedImage) {
 
         List<DetectedElement> detectedElements;
@@ -89,6 +95,7 @@ public class DetectorsManager {
 
     /**
      * Them 1 loai detecttor(o day lay doc tu haarcascades)
+     *
      * @param detectorName
      * @param counter
      */
@@ -99,6 +106,7 @@ public class DetectorsManager {
 
     /**
      * Set mau sac cho khung nhan dien
+     *
      * @param detectorName
      * @param counter
      */
@@ -109,6 +117,7 @@ public class DetectorsManager {
 
     /**
      * Thay doi kieu nhan dien khuon mat
+     *
      * @param recognizerType
      */
     public void changeRecognizer(RecognizerType recognizerType) {

@@ -7,7 +7,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Map;
 
 public class ImageUtils {
 
@@ -46,5 +48,37 @@ public class ImageUtils {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Lay danh sach imageTrain
+     * Chi ho tro 3 dang anh la: jpg, png, pgm
+     *
+     * @param trainingDir
+     * @return
+     */
+    public static File[] getImagesFiles(File trainingDir) {
+        FilenameFilter imgFilter = (dir, name) -> {
+            name = name.toLowerCase();
+            return name.endsWith(".jpg") || name.endsWith(".pgm") || name.endsWith(".png");
+        };
+
+        return trainingDir.listFiles(imgFilter);
+    }
+
+    /**
+     * Doc id cua image tu mapping
+     *
+     * @param filename
+     * @param idToNameMapping
+     * @return
+     */
+    public static int getIdFromImage(String filename, Map<Integer, String> idToNameMapping) {
+        String name = filename.split("_")[0];
+        return idToNameMapping.keySet()
+                .stream()
+                .filter(id -> idToNameMapping.get(id).equals(name))
+                .findFirst()
+                .orElse(-1);
     }
 }

@@ -48,9 +48,9 @@ public class UserCaptureDialog extends JDialog {
         SpringLayout sl = new SpringLayout();
         setLayout(sl);
 
-        // train button
+        // saveImage button
         trainButton = new JButton(LABEL_TRAIN_BUTTON);
-        trainButton.addActionListener(e -> train());
+        trainButton.addActionListener(e -> saveImage());
         trainButton.setEnabled(false);
         add(trainButton);
         sl.putConstraint(SpringLayout.WEST, trainButton, 5, SpringLayout.WEST, this.getContentPane());
@@ -93,7 +93,7 @@ public class UserCaptureDialog extends JDialog {
 
         // close dialog button
         JButton closeButton = new JButton(LABEL_CLOSE_BUTTON);
-        closeButton.addActionListener(e -> dispose());
+        closeButton.addActionListener(e -> closeUserCapture());
         add(closeButton);
         sl.putConstraint(SpringLayout.EAST, closeButton, -5, SpringLayout.EAST, this.getContentPane());
         sl.putConstraint(SpringLayout.SOUTH, closeButton, -5, SpringLayout.NORTH, statusBar);
@@ -131,7 +131,7 @@ public class UserCaptureDialog extends JDialog {
         startButton.setText(LABEL_RESUME_CAPTURING);
     }
 
-    private void train() {
+    private void saveImage() {
 
         if (userField.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please specify the username for this set of images.");
@@ -182,6 +182,18 @@ public class UserCaptureDialog extends JDialog {
         }
         capturedImagesPanel.revalidate();
         capturedImagesPanel.repaint();
+    }
+
+    private void closeUserCapture()  {
+        dispose();
+
+        try {
+            if (capturedFaces != null && capturedFaces.size() > 0) {
+                detectorsManager.reTrainImage();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class PictureGrabber extends SwingWorker {
